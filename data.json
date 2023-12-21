@@ -1,0 +1,52 @@
+[
+  {
+    "model": "main.student",
+    "pk": 1,
+    "fields": {
+      "first_name": "Люциус",
+      "last_name": "Фрост",
+      "avatar": "",
+      "is_active": true
+    }
+  },
+  {
+    "model": "main.student",
+    "pk": 2,
+    "fields": {
+      "first_name": "Влад",
+      "last_name": "Цепеш",
+      "avatar": "",
+      "is_active": true
+    }
+  },
+  {
+    "model": "main.student",
+    "pk": 3,
+    "fields": {
+      "first_name": "Архан",
+      "last_name": "Чёрный",
+      "avatar": "",
+      "is_active": false
+    }
+  },
+  {
+    "model": "main.student",
+    "pk": 4,
+    "fields": {
+      "first_name": "Френсис",
+      "last_name": "Дешвуд",
+      "avatar": "",
+      "is_active": true
+    }
+  },
+  {
+    "model": "main.student",
+    "pk": 5,
+    "fields": {
+      "first_name": "Алистер",
+      "last_name": "Кроули",
+      "avatar": "",
+      "is_active": true
+    }
+  }
+]
