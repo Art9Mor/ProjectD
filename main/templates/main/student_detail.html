@@ -18,8 +18,8 @@
                 </p>
             </div>
             <div class="container">
-                <a href="{% url 'main:edit' object.pk %}" type="button" class="btn btn-warning">Редактировать</a>
-                <a href="{% url 'main:delete' object.pk %}" type="button" class="btn btn-danger">Удалить</a>
+                <a href="{% url 'main:update_student' object.pk %}" type="button" class="btn btn-warning">Редактировать</a>
+                <a href="{% url 'main:delete_student' object.pk %}" type="button" class="btn btn-danger">Удалить</a>
                 <a href="{% url 'main:index' %}" type="button" class="btn btn-primary">Назад</a>
             </div>
         </div>
