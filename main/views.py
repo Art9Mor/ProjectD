@@ -1,3 +1,5 @@
+from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
@@ -6,19 +8,8 @@ from main.forms import StudentForm, SubjectForm
 from main.models import Student, Subject
 
 
-class StudentListView(ListView):
-    model = Student
-    template_name = 'main/index.html'
-    extra_context = {
-        'title': 'Список студентов'
-    }
-
-    # def get_queryset(self, *args, **kwargs):
-    #     queryset = super().get_queryset(*args, **kwargs)
-    #     queryset = queryset.filter(is_active=True)
-    #     return queryset
-
-
+@login_required
+@permission_required('main.view_subject')
 def index(request):
     student_list = Student.objects.all()
     context = {
@@ -29,6 +20,7 @@ def index(request):
     return render(request, 'main/index.html', context)
 
 
+@login_required
 def contact(request):
     if request.method == 'POST':
         name = request.POST.get('name')
@@ -42,13 +34,28 @@ def contact(request):
     return render(request, 'main/contact.html', context)
 
 
-class StudentDetailView(DetailView):
+class StudentListView(LoginRequiredMixin, ListView):
     model = Student
+    template_name = 'main/index.html'
+    extra_context = {
+        'title': 'Список студентов'
+    }
+
+    # def get_queryset(self, *args, **kwargs):
+    #     queryset = super().get_queryset(*args, **kwargs)
+    #     queryset = queryset.filter(is_active=True)
+    #     return queryset
+
+
+class StudentDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
+    model = Student
+    permission_required = 'main.view_student'
     template_name = 'main/student_detail.html'
 
 
-class StudentCreateView(CreateView):
+class StudentCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Student
+    permission_required = 'main.add_student'
     form_class = StudentForm
     # fields = ['first_name', 'last_name', 'avatar', 'is_active', 'info']
     success_url = reverse_lazy('main:index')
@@ -57,8 +64,9 @@ class StudentCreateView(CreateView):
     }
 
 
-class StudentUpdateView(UpdateView):
+class StudentUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Student
+    permission_required = 'main.change_student'
     form_class = StudentForm
     success_url = reverse_lazy('main:index')
 
@@ -83,11 +91,15 @@ class StudentUpdateView(UpdateView):
         return super().form_valid(form)
 
 
-class StudentDeleteView(DeleteView):
+class StudentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Student
     success_url = reverse_lazy('main:index')
 
+    def test_func(self):
+        return self.request.user.is_superuser
 
+
+@login_required
 def toggle_activity(request, pk):
     student_item = get_object_or_404(Student, pk=pk)
     if student_item.is_active:

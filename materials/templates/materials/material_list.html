@@ -18,9 +18,11 @@
                                 <a href="{% url 'materials:view' object.pk %}" type="button" class="btn btn-sm btn-outline-secondary">
                                     Посмотреть материал
                                 </a>
+                                {% if user.is_superuser %}
                                 <a href="{% url 'materials:delete' object.pk %}" type="button" class="btn btn-sm btn-outline-danger">
                                     Удалить материал
                                 </a>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
