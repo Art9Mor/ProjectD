@@ -8,7 +8,7 @@ from main.views import contact, StudentListView, StudentDetailView, StudentCreat
 app_name = MainConfig.name
 
 urlpatterns = [
-    path('', cache_page(60)(StudentListView.as_view()), name='index'),
+    path('', StudentListView.as_view(), name='index'),
     path('contact/', contact, name='contact'),
     path('create/', StudentCreateView.as_view(), name='create_student'),
     path('view/<int:pk>', StudentDetailView.as_view(), name='view_student'),
