@@ -7,30 +7,51 @@
                 <img src="{{ object.avatar|mymedia }}" class="w-100" alt="...">
             </div>
             <div class="col-md-6 p-4 ps-md-0">
-                <h5 class="mt-0">{{ object.first_name }} {{ object.last_name }}</h5>
-                <p>Характеристика: {{ object.info }}</p>
-                <ul>
-                    {% for subject in object.subject_set.all %}
-                        <li>{{ subject }}</li>
-                    {% endfor %}
-                </ul>
-                <p>
-                    {% if object.is_active is True %}
-                        Активность: Учится
-                    {% else %}
-                        Активность: Не учится
+                <table class="table">
+                    <tr>
+                        <td>Имя</td>
+                        <td>{{ object.first_name }}</td>
+                    </tr>
+                    <tr>
+                        <td>Фамилия</td>
+                        <td>{{ object.last_name }}</td>
+                    </tr>
+                    <tr>
+                        <td>Почта</td>
+                        <td>{{ object.email }}</td>
+                    </tr>
+                    <tr>
+                        <td>Характеристика</td>
+                        <td>{{ object.info }}</td>
+                    </tr>
+                    <tr>
+                        <td>Предметы</td>
+                        {% for subject in subjects %}
+                            <td>{{ subject }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <td>Активность</td>
+                        <td>
+                            {% if object.is_active is True %}
+                                Учится
+                            {% else %}
+                                Не учится
+                            {% endif %}
+                        </td>
+                    </tr>
+                </table>
+                <div class="container">
+                    {% if perms.main.change_student %}
+                        <a href="{% url 'main:update_student' object.pk %}" type="button"
+                           class="btn btn-warning">Редактировать</a>
                     {% endif %}
-                </p>
-            </div>
-            <div class="container">
-                {% if perms.main.change_student %}
-                    <a href="{% url 'main:update_student' object.pk %}" type="button"
-                       class="btn btn-warning">Редактировать</a>
-                {% endif %}
-                {% if user.is_superuser %}
-                    <a href="{% url 'main:delete_student' object.pk %}" type="button" class="btn btn-danger">Удалить</a>
-                {% endif %}
-                <a href="{% url 'main:index' %}" type="button" class="btn btn-primary">Назад</a>
+                    {% if user.is_superuser %}
+                        <a href="{% url 'main:delete_student' object.pk %}" type="button"
+                           class="btn btn-danger">Удалить</a>
+                    {% endif %}
+                    <a href="{% url 'main:index' %}" type="button" class="btn btn-primary">Назад</a>
+                </div>
             </div>
         </div>
     </div>
